@@ -128,8 +128,3 @@ spring.datasource.password=your_db_password
 spring.jpa.hibernate.ddl-auto=update
 Ensure absolute paths in fileUrl exist on your server.
 
-🏃 Running the Application
-git clone https://github.com/yourusername/media-app.git
-cd media-app
-mvn clean install
-mvn spring-boot:run
