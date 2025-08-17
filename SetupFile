@@ -12,7 +12,7 @@ Git (if you want to clone the repo)
 Java 23 & Maven (only if you plan to run locally without Docker)
 
 2️⃣ Clone the project
-git clone https://github.com/your-username/media_app.git
+git clone https://github.com/Neeraj16102004/Media-App
 cd media_app
 
 3️⃣ Environment setup
