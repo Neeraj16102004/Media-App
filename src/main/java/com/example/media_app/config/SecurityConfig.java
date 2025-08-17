@@ -41,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/media").authenticated()
                         .requestMatchers(HttpMethod.GET, "/media/**").authenticated()
                         .requestMatchers("/stream").permitAll()
+                        .requestMatchers("/media/*/view", "/media/*/analytics").authenticated()
                         .anyRequest().authenticated()
                 );
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

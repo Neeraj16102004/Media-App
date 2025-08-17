@@ -114,7 +114,10 @@ Response: URL with token
 5. **Stream media**
 GET <stream-url from previous step>
 
+6. **Log a Media view** POST /media/{id}/view Headers: Authorization: Bearer <token>
 
+7. **Media Analytics** GET /media/{id}/analytics Headers: Authorization: Bearer <token>
+   
 
 ---
 
@@ -127,4 +130,3 @@ spring.datasource.username=your_db_user
 spring.datasource.password=your_db_password
 spring.jpa.hibernate.ddl-auto=update
 Ensure absolute paths in fileUrl exist on your server.
-
