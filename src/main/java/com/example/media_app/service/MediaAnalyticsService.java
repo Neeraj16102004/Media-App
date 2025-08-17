@@ -5,12 +5,15 @@ import com.example.media_app.entity.MediaViewLog;
 import com.example.media_app.repository.MediaAssetRepository;
 import com.example.media_app.repository.MediaViewLogRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +35,7 @@ public class MediaAnalyticsService {
         viewLogRepository.save(log);
     }
 
+    @Cacheable(value = "mediaAnalytics", key = "#mediaId")  // Redis Caching
     public Map<String, Object> getAnalytics(Long mediaId) {
         if (!mediaAssetRepository.existsById(mediaId)) {
             throw new RuntimeException("Media not found");
@@ -56,5 +60,13 @@ public class MediaAnalyticsService {
 
         return analytics;
     }
+
+    private final CacheManager cacheManager;
+
+    private static final String ANALYTICS_CACHE = "mediaAnalytics";
+    public void evictCache(Long mediaId) {
+        Objects.requireNonNull(cacheManager.getCache(ANALYTICS_CACHE)).evict(mediaId);
+    }
 }
+
 

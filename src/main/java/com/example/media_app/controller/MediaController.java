@@ -2,7 +2,10 @@ package com.example.media_app.controller;
 
 import com.example.media_app.entity.MediaAsset;
 import com.example.media_app.repository.MediaAssetRepository;
+import com.example.media_app.service.MediaAnalyticsService;
+import com.example.media_app.service.RateLimiterService;
 import com.example.media_app.service.StreamTokenService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,6 +25,8 @@ public class MediaController {
 
     private final MediaAssetRepository mediaAssetRepository;
     private final StreamTokenService streamTokenService;
+    private final MediaAnalyticsService analyticsService;
+    private final RateLimiterService rateLimiterService;
 
     private final String MEDIA_FOLDER = "/Volumes/neeraj/projects/MEDIA_FOLDER"; // <- set your folder here
 
@@ -59,6 +64,23 @@ public class MediaController {
         String token = streamTokenService.generateStreamToken(id);
         String streamUrl = "http://localhost:8080/stream?token=" + token;
         return ResponseEntity.ok(streamUrl);
+    }
+
+    @PostMapping("/{id}/view")
+    public ResponseEntity<?> logView(@PathVariable Long id, HttpServletRequest request) {
+        String ip = request.getRemoteAddr();
+
+        if (!rateLimiterService.tryConsume(ip)) {
+            return ResponseEntity
+                    .status(429)
+                    .body("Rate limit exceeded. Try again later.");
+        }
+
+        analyticsService.logView(id, ip);
+
+        analyticsService.evictCache(id); // ✅ now exists in service
+
+        return ResponseEntity.ok("View logged");
     }
 }
 

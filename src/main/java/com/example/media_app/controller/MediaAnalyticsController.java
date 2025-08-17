@@ -1,6 +1,7 @@
 package com.example.media_app.controller;
 
 import com.example.media_app.service.MediaAnalyticsService;
+import jakarta.persistence.Cacheable;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

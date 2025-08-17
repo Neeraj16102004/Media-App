@@ -120,6 +120,49 @@ GET <stream-url from previous step>
    
 
 ---
+🐳 Running with Docker
+1. Build & Start Containers
+   docker-compose up --build
+
+2. Application Profiles
+
+dev → Local DB + Redis
+
+docker → Dockerized DB + Redis
+
+prod → Production-ready (no ddl-auto, optimized logging, etc.)
+
+🧪 Running Tests
+JUnit (Java Tests)
+./mvnw test
+
+Example Test Classes
+
+MediaServiceTest.java
+
+AnalyticsServiceTest.java
+
+RateLimiterTest.java
+
+📡 API Endpoints
+Media Analytics
+
+POST /media/:id/view → Record a view (Rate Limited)
+
+GET /media/:id/analytics → Fetch analytics (Cached with Redis)
+
+📂 Project Structure
+src/main/java/com/example/media
+├── controller      # REST controllers
+├── service         # Business logic
+├── repository      # Data access layer
+├── model           # Entities
+├── config          # Security, Redis, Rate Limiting
+└── MediaApplication.java
+
+src/test/java/com/example/media
+├── service         # Unit tests
+├── controller      # API tests
 
 ## ⚙ Configuration
 

@@ -1,0 +1,88 @@
+🚀 Setup Steps
+1️⃣ Prerequisites
+
+Make sure you have installed:
+
+Docker 🐳
+
+Docker Compose
+
+Git (if you want to clone the repo)
+
+Java 23 & Maven (only if you plan to run locally without Docker)
+
+2️⃣ Clone the project
+git clone https://github.com/your-username/media_app.git
+cd media_app
+
+3️⃣ Environment setup
+
+Copy the example env file and adjust values:
+
+cp .env.example .env
+
+
+✏️ Edit .env if needed (DB password, Redis host, etc).
+Default values:
+
+SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/media_app
+SPRING_DATASOURCE_USERNAME=postgres
+SPRING_DATASOURCE_PASSWORD=postgres
+SPRING_JPA_HIBERNATE_DDL_AUTO=update
+SPRING_JPA_SHOW_SQL=true
+
+REDIS_HOST=redis
+REDIS_PORT=6379
+
+4️⃣ Build & Run with Docker
+🔹 Option A: Build and run manually
+# Build docker image
+docker build -t media_app .
+
+# Run container (will use default .env values)
+docker run -p 8080:8080 --env-file .env media_app
+
+🔹 Option B: Use docker-compose (recommended)
+docker-compose up --build
+
+
+This starts:
+
+media_app (Spring Boot backend) → http://localhost:8080
+
+db (PostgreSQL) on port 5432
+
+redis on port 6379
+
+5️⃣ Verify setup
+
+Check logs:
+
+docker logs media_app
+
+
+API health check:
+
+curl http://localhost:8080/actuator/health
+
+
+Swagger (if enabled):
+
+http://localhost:8080/swagger-ui.html
+
+6️⃣ Running Tests (outside Docker)
+
+If you want to run tests before packaging:
+
+mvn clean test
+
+
+👉 Inside Docker, tests are skipped during image build (-DskipTests).
+
+7️⃣ Stopping containers
+docker-compose down
+
+
+Add -v to remove volumes (⚠️ deletes DB data):
+
+docker-compose down -v
